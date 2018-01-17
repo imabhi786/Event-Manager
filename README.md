@@ -1,2 +1,2 @@
 # Event-Manager
-Web Appliction to manage events.
+Web Application to manage events.
