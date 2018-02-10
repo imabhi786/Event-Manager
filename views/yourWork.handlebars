@@ -1,0 +1,103 @@
+    
+<div class="main-body">
+	<div class="header" id="header">
+		<div>
+			<h1>Event Manager</h1>
+		</div>
+	</div>
+	<div class="flexed">
+		<div class="page">
+			<div>
+				<div class="tab" style="float: right;" onclick="navigation()"><i class="fa fa-bars"></i></div>
+				{{#headVal committee 'head'}}
+					<a href="/add/{{committeeName}}">
+						<div class="button" style="float: right;">
+							Add Work
+						</div>
+					</a>
+				{{/headVal}}
+				<div><h2 style="text-transform:uppercase;">{{committeeName}}</h2></div>
+			</div>
+
+			<div id="navmenu" class="menu">
+				{{#headVal committee 'head'}}
+					<a href="/main">
+						<div class="menu-ele">
+							Home
+						</div>
+					</a>
+				{{/headVal}}
+				<a href="/profile/{{currentUser}}">
+					<div class="menu-ele">
+						Your Profile
+					</div>
+				</a>
+				<a href="/leaderboard/{{committeeName}}">
+					<div class="menu-ele">
+						Leaderboard
+					</div>
+				</a>
+				<a href="/logout">
+					<div class="menu-ele">
+						Logout
+					</div>
+				</a>
+			</div>
+
+			<div class="navbar">
+					<div class="navtab active">
+						Your Work
+					</div>
+				<a href="/committee/{{committeeName}}/allWork">
+					<div class="navtab">
+						Current Work
+					</div>
+				</a>
+				<a href="/committee/{{committeeName}}/closedWork">
+					<div class="navtab">
+						Closed Work
+					</div>
+				</a>
+			</div>
+
+			<div class="list">
+				<!--works-->
+				{{#if works}}
+					<hr>
+					{{#each works}}
+						<div class="list-ele full">
+							<div class="arrow" onclick="extend('{{heading}}','arrow-{{heading}}')"><i id="arrow-{{heading}}" class="fas fa-angle-down"></i></div>
+							{{#headVal complete 1}}
+								<div class="closed"><i class="fas fa-times-circle"></i>Closed</div>
+							{{/headVal}}
+							<h3>{{heading}}</h3>
+							{{description}}
+						
+						<div id="{{heading}}" class="ext">
+							Assignee : <a href="/profile/{{assignee}}" style="text-decoration: underline;">{{assignee}}</a><br>
+							assigned {{duration}} ago<br>
+							Difficulty : {{difficulty}}
+							{{#headVal proposed 0}}
+								{{#headVal complete 0}}
+									<form method="post" action="/propose">
+										<input type="hidden" name="event" value="{{../event}}" readonly>
+										<input type="hidden" name="committee" value="{{../committeeName}}" readonly>
+										<input type="hidden" name="work" value="{{heading}}" readonly>
+										<input type="submit" name="propose" value="Propose Completed!" style="max-width:55%;font-size: 100%;" class="button">
+										<input type="submit" name="cant" value="I can't do it!" style="width:35%;font-size: 100%;" class="button"><br>
+									</form>
+								{{/headVal}}
+							{{/headVal}}
+						</div>
+					</div>
+					<hr>
+					{{/each}}
+				{{else}}
+					<div style="height: 60%;padding-top: 27%;text-align: center;">
+						No work is added yet.
+					</div>
+				{{/if}}
+			</div>
+		</div>
+	</div>
+</div>

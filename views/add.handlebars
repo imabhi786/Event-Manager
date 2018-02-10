@@ -1,0 +1,50 @@
+<div class="main">
+	<div class="form-container">
+	<form method="post" action="/addWork">
+	    <label for="committee">Committee Name</label><br>
+	    <input type="text" name="committee" value={{committeeName}} readonly style="text-transform: uppercase;" required><br><br>
+		<label for="work">Work Name</label><br>
+		<input type="text" name="work" required><br><br>
+		<label for="assignee">Assignee</label><br>
+		<input type="text" name="assignee" id="assigneeIn" autocomplete="off" required><br><br>
+			<div id="search-list"></div>
+		<label for ="description">Description</label><br>
+		<input type="text" name="description" required><br><br> 
+		<label for ="difficulty">Difficulty</label><br>
+		<select name='difficulty'>
+			<option value="Easy">Easy</option>
+			<option value="Average">Average</option>
+			<option value="Hard">Hard</option>
+		</select><br><br>
+		<!-- <input type="text" name="difficulty"><br><br> -->
+		
+		<input type="submit" id="assign" disabled name="Add" value="Add" class="button"><br><br>
+	</form>
+    </div>
+</div>
+
+<script>
+	var assigneeIn = document.getElementById('assigneeIn');
+	assigneeIn.addEventListener("keyup",(event) => {
+		document.getElementById('search-list').style.display = 'block';
+		var xhttp = new XMLHttpRequest();
+		xhttp.onreadystatechange = function() {
+	    	if (this.readyState == 4 && this.status == 200) {
+	    		let sarr = JSON.parse(this.response);
+	    		let list = document.getElementById('search-list');
+	    		sarr = sarr.map((x) => {
+	    			return `<div id="${x}" onclick="select('${x}')">${x}</div>`;
+	    		});
+	    		list.innerHTML = sarr.join('');
+	    	}
+		};
+		xhttp.open("GET", "/search/?a=" + assigneeIn.value + "&c=" + '{{committeeName}}', true);
+	  	xhttp.send();
+	});
+	function select(id){
+		let value = document.getElementById(id).innerHTML;
+		document.getElementById('assigneeIn').value = value;
+		document.getElementById('search-list').style.display = 'none';
+		document.getElementById('assign').disabled = false;
+	}
+</script>

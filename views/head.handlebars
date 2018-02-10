@@ -1,0 +1,169 @@
+<div class="main-body">
+	<div class="header" id="header">
+		<div>
+			<h1>
+				Event Manager
+			</h1>
+		</div>
+	</div>
+	<div class="flexed">
+		<div class="page">
+			<div>
+				<div class="tab" style="float: right;" onclick="navigation()"><i class="fa fa-bars"></i></div>
+				<div><h1>{{eventName}}</h1></div>
+				
+			</div>
+			<div id="navmenu" class="menu">
+				<div class="menu-ele" onclick="openModal('invite')">
+					Invite Member
+				</div>
+				<a href="/profile/{{currentUser}}">
+					<div class="menu-ele">
+						Your Profile
+					</div>
+				</a>
+				<a href="/logout">
+					<div class="menu-ele">
+						Logout
+					</div>
+				</a>
+				<div class="menu-ele" onclick="openModal('delete')">
+					Delete Event
+				</div>
+			</div>
+			<hr>
+			<div>
+				<div class="button" style="float: right;" onclick="openModal('committee')">
+					Add Committee
+				</div>
+				<h2>Committes</h2>
+			</div>
+			<div class="list">
+				<!--committee-->
+				{{#if committee}}
+					{{#each committee}}
+						<div class="list-ele">
+							<div class="ico" style="float: right;">
+								<form method="post" action="/deleteCommittee">
+									<input type="hidden" name="committee" value="{{name}}" readonly>
+									<button type="submit"><h4><i class="fas fa-trash-alt"></i></h4></button>
+								</form>
+							</div>
+							<a href="/leaderboard/{{name}}">
+								<div class="ico" style="float: right;">
+									<h4><i class="far fa-clipboard"></i></h4>
+								</div>
+							</a>
+							<h4><a href="/committee/{{name}}/allWork" class="h-under">{{name}}</a></h4>
+						</div>
+					{{/each}}
+				{{else}}
+					<div style="height: 60%;padding-top: 27%;text-align: center;">
+						No committee is added yet.
+					</div>
+				{{/if}}
+			</div>
+
+			<h2 style="margin-top: 80px;">Recent Works</h2>
+			<div class="list">
+				<!--works-->
+				{{#if works}}
+					
+					{{#each works}}
+						<div class="list-ele full">
+							<h3>{{heading}}</h3>
+							{{description}}<br>
+							From: <a href="/committee/{{committee}}/allWork" style="cursor: pointer;"><i>{{committee}} Committee</i></a>
+						</div>
+						<hr>
+					{{/each}}
+				{{else}}
+					<div style="padding-top: 20px;text-align: center;">
+						No work is added yet.
+					</div>
+				{{/if}}
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="committee">
+	<div class="modal-content">
+		<div class="close" onclick="closeModal('committee')">&times;</div>
+		<div class="modal-header">
+			<h2>Add Committee</h2>
+		</div>
+		<div class="modal-body">
+			<form method="post" action="/addCommittee">
+				<label for="committee">Committee Name</label><br>
+				<input type="text" name="committee" id="committeeIn" autocomplete="off" required><br><p class="warning" id="committeeWar"></p><br>
+				<input type="submit" name="Add" value="Add" class="button" id="add"><br><br>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="invite">
+	<div class="modal-content">
+		<div class="close" onclick="closeModal('invite')">&times;</div>
+		<div class="modal-header">
+			<h2>Invite Member</h2>
+		</div>
+		<div class="modal-body">
+			<form method="post" action="/invite">
+				<label for="email">Member's Email</label><br>
+				<input type="email" name="email"><br><br>
+				<label for="committee">Committee Name</label><br>
+				<input type="text" name="committee"><br><br>
+				<input type="submit" name="Invite" value="Invite" class="button"><br><br>
+			</form>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="delete">
+	<div class="dialog-content">
+		<div class="close" onclick="closeModal('delete')">&times;</div>
+		<div class="modal-header">
+			<h2>Delete Event</h2>
+		</div>
+		<hr>
+		<div class="dialog-body">
+			<p>Are you sure you want to delete this event,It will delete entire records of your event.<br>If you are sure, then enter Event name below.</p>
+			<form method="post" action="/deleteEvent">
+				<input type="text" id="deleteIn" name="event" autocomplete="off"><br><br>
+				<input type="submit" name="delete" value="Delete" id="del" class="button" style="background-color: #bb1616;max-width:90px;font-size: 100%;" disabled><br><br>
+			</form>
+		</div>
+	</div>
+</div>
+
+<script>
+    var committeeIn = document.getElementById('committeeIn');
+    committeeIn.addEventListener("keyup",(event) => {
+        var xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("committeeWar").innerHTML = this.responseText;
+                if(this.responseText){
+                	document.getElementById('add').disabled = true;
+                }
+                else{
+                	document.getElementById('add').disabled = false;
+                }
+            }
+        };
+        xhttp.open("GET", "/committeeName/?u="+committeeIn.value+"&e={{eventName}}", true);
+        xhttp.send();
+    });
+
+    var deleteIn = document.getElementById('deleteIn');
+    deleteIn.addEventListener("keyup",(e) => {
+    	if(deleteIn.value == '{{eventName}}'){
+    		document.getElementById('del').disabled = false;
+    	}
+    	else{
+    		document.getElementById('del').disabled = true;
+    	}
+    });
+</script>

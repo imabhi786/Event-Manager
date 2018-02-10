@@ -1,0 +1,52 @@
+<div class="main-body">
+		<div class="header" id="header">
+			<div>
+				<h1>{{eventName}}</h1>
+			</div>
+		</div>
+		<div class="flexed">
+			<div class="side">
+				<!--option menu-->
+			</div>
+			<div class="page">
+				<div class="button" onclick="openModal('modal')">
+					Add Work
+				</div>
+				<div class="list">
+					<!--works-->
+					<div class="list-ele" onclick="extend('ext1')">
+						<h4>Work Heading</h4>
+						<p>description goes here...</p>
+						<div id="ext1" class="ext">
+							assignee : name<br>
+							created on 30 nov,2017
+							<div class="flexed">
+								<div class="button">
+									Propose Completed!
+								</div>
+								<div class="button">
+									I can't do it!
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal" id="modal">
+		<div class="modal-content">
+			<button style="position: absolute;top: 5px;right: 5px;font-size: 25px;border: 0" onclick="closeModal('modal')">&times;</button>
+			<div class="modal-header">
+				<h2>Add Committee</h2>
+			</div>
+			<div class="modal-body">
+				<form method="post" action="/add">
+					<label for="committee">Committee Name</label><br>
+					<input type="text" name="committee"><br><br>
+					<input type="submit" name="Add" value="Add" class="button"><br><br>
+				</form>
+			</div>
+		</div>
+	</div>

@@ -1,0 +1,99 @@
+    
+<div class="main-body">
+	<div class="header" id="header">
+		<div>
+			<h1>Event Manager</h1>
+		</div>
+	</div>
+	<div class="flexed">
+		<div class="page">
+			<div>
+				<div class="tab" style="float: right;" onclick="navigation()"><i class="fa fa-bars"></i></div>
+				{{#headVal committee 'head'}}
+					<a href="/add/{{committeeName}}">
+						<div class="button" style="float: right;">
+							Add Work
+						</div>
+					</a>
+				{{/headVal}}
+				<div><h2 style="text-transform:uppercase;">{{committeeName}}</h2></div>
+			</div>
+
+			<div id="navmenu" class="menu">
+				{{#headVal committee 'head'}}
+					<a href="/main">
+						<div class="menu-ele">
+							Home
+						</div>
+					</a>
+				{{/headVal}}
+				<a href="/profile/{{currentUser}}">
+					<div class="menu-ele">
+						Your Profile
+					</div>
+				</a>
+				<a href="/leaderboard/{{committeeName}}">
+					<div class="menu-ele">
+						Leaderboard
+					</div>
+				</a>
+				<a href="/logout">
+					<div class="menu-ele">
+						Logout
+					</div>
+				</a>
+			</div>
+
+			<div class="navbar">
+				{{#headVal committee committeeName}}
+					<a href="/committee/{{committeeName}}">
+						<div class="navtab">
+							Your Work
+						</div>
+					</a>
+				{{/headVal}}
+				{{#headVal committee 'head'}}
+					<a href="/committee/{{committeeName}}/proposedWork">
+						<div class="navtab">
+							Requests
+						</div>
+					</a>
+				{{/headVal}}
+				<a href="/committee/{{committeeName}}/allWork">
+					<div class="navtab">
+						Current Work
+					</div>
+				</a>
+				<div class="navtab active">
+					Closed Work
+				</div>
+				
+			</div>
+
+			<div class="list">
+				<!--works-->
+				{{#if works}}
+					<hr>
+					{{#each works}}
+						<div class="list-ele full">
+							<div class="arrow" onclick="extend('{{heading}}','arrow-{{heading}}')"><i id="arrow-{{heading}}" class="fas fa-angle-down"></i></div>
+							<h3>{{heading}}</h3>
+							{{description}}
+						
+						<div id="{{heading}}" class="ext">
+							Assignee : <a href="/profile/{{assignee}}" style="text-decoration: underline;">{{assignee}}</a><br>
+							assigned {{duration}} ago<br>
+							Difficulty : {{difficulty}}
+						</div>
+					</div>
+					<hr>
+					{{/each}}
+				{{else}}
+					<div style="height: 60%;padding-top: 27%;text-align: center;">
+						No work is added yet.
+					</div>
+				{{/if}}
+			</div>
+		</div>
+	</div>
+</div>
